@@ -22,3 +22,9 @@ docker安装
 	systemctl enable docker
 你可能想核对一下 docker 版本：
 	docker version
+非root用户可以直接运行docker时
+	sudo usermod -aG docker pi
+	
+======================================================================
+
+女_107207
