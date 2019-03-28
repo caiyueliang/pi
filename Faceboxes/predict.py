@@ -8,17 +8,20 @@ import cv2
 import time
 
 
-print('opencv version', cv2.__version__)
+# print('opencv version', cv2.__version__)
 
 
 def detect(im):
     im = cv2.resize(im, (1024, 1024))
-    im_tensor = torch.from_numpy(im.transpose((2, 0, 1)))
-    im_tensor = im_tensor.float().div(255)
-    im_tensor = Variable(torch.unsqueeze(im_tensor, 0), volatile=True)
-    print(im_tensor.shape)
-    loc, conf = net(im_tensor)
-    boxes, labels, probs = data_encoder.decode(loc[0], conf[0], False)
+    img_tensor = torch.from_numpy(im.transpose((2, 0, 1)))
+    img_tensor = img_tensor.float().div(255)
+    with torch.no_grad():
+        img_tensor = img_tensor.view(-1, 3, 1024, 1024)
+        img_var = Variable(img_tensor)
+        # im_tensor = Variable(torch.unsqueeze(im_tensor, 0), volatile=True)
+        # print(im_tensor.shape)
+        loc, conf = net(img_var)
+        boxes, labels, probs = data_encoder.decode(loc[0], conf[0], False)
     return boxes, probs
 
 
@@ -47,25 +50,25 @@ def testVideo(file):
         cv2.waitKey(2)
 
 
-def testIm(file):
+def test_image(file, show=False):
     im = cv2.imread(file)
     if im is None:
         print("can not open image:", file)
         return
-    h,w,_ = im.shape
+    h, w, _ = im.shape
     boxes, probs = detect(im)
-    print(boxes)
     for i, (box) in enumerate(boxes):
-        print('i', i, 'box', box)
+        # print('i', i, 'box', box)
         x1 = int(box[0]*w)
         x2 = int(box[2]*w)
         y1 = int(box[1]*h)
         y2 = int(box[3]*h)
-        print(x1, y1, x2, y2, w, h)
-        cv2.rectangle(im,(x1,y1+4),(x2,y2),(0,255,0),2)
-        cv2.putText(im, str(probs[i]), (x1,y1), font, 0.4, (0,255,0))
-    cv2.imshow('photo', im)
-    cv2.waitKey(0)
+        # print(x1, y1, x2, y2, w, h)
+        cv2.rectangle(im, (x1, y1+4), (x2, y2), (0, 255, 0), 2)
+        cv2.putText(im, str(probs[i]), (x1, y1), font, 0.4, (0, 255, 0))
+    if show:
+        cv2.imshow('photo', im)
+        cv2.waitKey(0)
     return im
 
 
@@ -74,7 +77,7 @@ def testImList(path, file_name):
         file_list = f.readlines()
 
     for item in file_list:
-        testIm(path+item.strip()+'.jpg')
+        test_image(path+item.strip()+'.jpg')
 
 
 def saveFddbData(path, file_name):
@@ -137,7 +140,10 @@ if __name__ == '__main__':
     start = time.time()
     root_path = "./img/"
     picture = 'test.jpg'
-    testIm(root_path + picture)
+    for i in range(100):
+        test_image(root_path + picture)
+    end = time.time()
+    print('[Time] %d' % (end - start))
 
     # # given image path, predict and show
     # fddb_path = "/home/lxg/codedata/fddb/2002/07/19/big/"
