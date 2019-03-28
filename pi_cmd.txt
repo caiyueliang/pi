@@ -1,0 +1,24 @@
+要启动和访问控制树莓派，主要通过下面3种方式：
+树莓派raspbian系统用户名为pi，密码默认为raspberry；root用户权限密码为raspberry。
+第一种：直接给树莓派外接一个HDMI显示屏和鼠标键盘，然后上电直接操作；
+第二种：通过SSH或串口来访问树莓派，我们这里借助putty工具；
+第三种：通过VNC服务远程登录树莓派（需要配置）。
+ssh pi@192.168.1.11
+yahboom --> 1
+20051909cyl!
+
+======================================================================
+树莓派系统安装到SD卡上之后，内存只有几十M？答：这个属于正常现象，因为linux和windows文件结构不一样，需要看大小，可以用SDFormat格式化后就会恢复到原始大小。需要看真实大小可以在linux下用命令查看 df -h 查看，也可以恢复空间。扩大SD卡内存简单办法操作步骤：先用df -h查看1、终端输入 sudo raspi-cinfig 进入系统调试界面2、选择7 Advanced Options 下 1 ExpandFilesystem3、点击确定即可4、打开文件查看内存卡容量你会有惊喜呦最后再用df -h查看变化。
+
+======================================================================
+docker安装
+	uname -r
+	sudo apt-get update
+现在运行安装 Docker 的命令：
+	sudo apt-get install -y docker.io
+等待安装完毕，现在我们使用下面的命令启动 Docker：
+	systemctl start docker
+运行系统引导时启用 docker，命令：
+	systemctl enable docker
+你可能想核对一下 docker 版本：
+	docker version
