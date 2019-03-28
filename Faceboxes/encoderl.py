@@ -1,8 +1,10 @@
 # encoding:utf-8
 
 import torch
+import math
 import itertools
 import cv2
+import numpy as np
 
 
 class DataEncoder:
@@ -98,8 +100,8 @@ class DataEncoder:
 
         # 测试 encode
         loc, conf = self.encode(boxes, label, threshold=0.35)
-        # print('conf', type(conf), conf.size(), conf.long().sum())
-        # print('loc', type(loc), loc.size())
+        print('conf', type(conf), conf.size(), conf.long().sum())
+        print('loc', type(loc), loc.size())
         # img = cv2.imread('test1.jpg')
         w, h, _ = img.shape
 
@@ -138,10 +140,8 @@ class DataEncoder:
         for i in range(32*32*21, 32*32*21+16*16):
             box_item = self.default_boxes[i]*w
             centerx, centery = int(box_item[0]), int(box_item[1])
-            if conf[i] == 1:
+            if conf[i] != 0:
                 cv2.circle(im, (centerx, centery), 4, (0, 255, 0))      # 小绿圆，置信度不为0
-            elif conf[i] == 2:
-                cv2.circle(im, (centerx, centery), 4, (255, 0, 0))      # 小蓝圆，置信度不为0
             else:
                 cv2.circle(im, (centerx, centery), 2, (0, 0, 255))      # 小红点
         box = self.default_boxes[32*32*21]
@@ -152,10 +152,8 @@ class DataEncoder:
         for i in range(32*32*21+16*16, len(self.default_boxes)):
             box_item = self.default_boxes[i]*w
             centerx, centery = int(box_item[0]), int(box_item[1])
-            if conf[i] == 1:
+            if conf[i] != 0:
                 cv2.circle(im, (centerx, centery), 4, (0, 255, 0))      # 小绿圆，置信度不为0
-            elif conf[i] == 2:
-                cv2.circle(im, (centerx, centery), 4, (255, 0, 0))      # 小蓝圆，置信度不为0
             else:
                 cv2.circle(im, (centerx, centery), 2, (0, 0, 255))      # 小红点
         box = self.default_boxes[32*32*21+16*16]
@@ -170,11 +168,9 @@ class DataEncoder:
         conf_change = []
         for c in conf:
             if c == 0:
-                conf_change.append([1, 0, 0])
-            elif c == 1:
-                conf_change.append([0, 1, 0])
+                conf_change.append([1, 0])
             else:
-                conf_change.append([0, 0, 1])
+                conf_change.append([0, 1])
         boxes, labels, max_conf = self.decode(loc, torch.Tensor(conf_change), False)
         print(boxes, labels, max_conf)
 
@@ -255,7 +251,7 @@ class DataEncoder:
         # print('conf', conf.size(), conf)
         conf[iou < threshold] = 0           # iou小的设为背景， 0为背景
         # print('conf', conf.size(), conf)
-        # conf[max_iou_index] = 1             # 这么设置有问题，loc loss 会导致有inf loss，从而干扰训练，
+        # conf[max_iou_index] = 1           # 这么设置有问题，loc loss 会导致有inf loss，从而干扰训练，
         # print('conf', conf.size(), conf)
                                             # 去掉后，损失降的更稳定些，是因为widerFace数据集里有的label
                                             # 做的宽度为0，但是没有被滤掉，是因为max(1)必须为每一个object选择一个
@@ -267,10 +263,94 @@ class DataEncoder:
 
         return loc, conf
 
+    # ==================================================================================
     def nms(self, bboxes, scores, threshold=0.5):
         '''
         bboxes(tensor) [N,4]
         scores(tensor) [N,]
+        '''
+        x1 = bboxes[:,0]
+        y1 = bboxes[:,1]
+        x2 = bboxes[:,2]
+        y2 = bboxes[:,3]
+        areas = (x2-x1) * (y2-y1)
+
+        _, order = scores.sort(0, descending=True)
+        keep = []
+        while order.numel() > 0:
+            i = order[0]
+            keep.append(i)
+
+            if order.numel() == 1:
+                break
+
+            xx1 = x1[order[1:]].clamp(min=x1[i].item())
+            yy1 = y1[order[1:]].clamp(min=y1[i].item())
+            xx2 = x2[order[1:]].clamp(max=x2[i].item())
+            yy2 = y2[order[1:]].clamp(max=y2[i].item())
+
+            w = (xx2-xx1).clamp(min=0)
+            h = (yy2-yy1).clamp(min=0)
+            inter = w*h
+
+            ovr = inter / (areas[i] + areas[order[1:]] - inter)
+            ids = (ovr<=threshold).nonzero().squeeze()
+            if ids.numel() == 0:
+                break
+            order = order[ids+1]
+        return torch.LongTensor(keep)
+
+    def decode(self, loc, conf, use_gpu, nms_threshold=0.5):
+        '''
+        將预测出的 loc/conf转换成真实的人脸框
+        loc [21842, 4]
+        conf [21824, 2]
+        '''
+        # print('loc', loc.size(), loc)
+        # print('conf', conf.size(), conf)
+        variances = [0.1, 0.2]
+
+        # variances = [0.1, 0.2]
+        # cxcy = (boxes[:, :2] + boxes[:, 2:])/2 - default_boxes[:, :2]       # [21824,2]
+        # cxcy /= variances[0] * default_boxes[:, 2:]
+        # wh = (boxes[:, 2:] - boxes[:, :2]) / default_boxes[:, 2:]           # [21824,2]  为什么会出现0宽度？？
+        # wh = torch.log(wh) / variances[1]                                   # Variable. log求自然对数
+        if use_gpu:
+            cxcy = loc[:, :2].cuda() * variances[0] * self.default_boxes[:, 2:].cuda() + self.default_boxes[:, :2].cuda()
+            wh = torch.exp(loc[:, 2:] * variances[1]) * self.default_boxes[:, 2:].cuda()
+            boxes = torch.cat([cxcy-wh/2, cxcy+wh/2], 1)                        # [21824,4]
+        else:
+            cxcy = loc[:, :2] * variances[0] * self.default_boxes[:, 2:] + self.default_boxes[:, :2]
+            wh = torch.exp(loc[:, 2:] * variances[1]) * self.default_boxes[:, 2:]   # 返回一个新张量，包含输入input张量每个元素的指数
+            boxes = torch.cat([cxcy-wh/2, cxcy+wh/2], 1)                        # [21824,4]
+
+        # ('conf', (21824, 2))
+        conf[:, 0] = 0.4                    # 置信度第0列（背景）设为0.4，下面再取最大值，目的是为了过滤置信度小于0.4的标签
+        max_conf, labels = conf.max(1)      # ('max_conf', (21824,)) ('labels', (21824,))
+
+        # TODO 以下这部分被注释掉（不知道作用）
+        if labels.long().sum().item() is 0:                     # 标签和为0？表示图片没有标签？
+            sconf, slabel = conf.max(0)
+            max_conf[slabel[0:5]] = sconf[0:5]
+            labels[slabel[0:5]] = 1
+        # TODO 以上这部分被注释掉（不知道作用）
+
+        # print('nonzero', labels.nonzero().size())               # (9, 1)    (11, 1)
+        # print('squeeze', labels.nonzero().squeeze(1).size())    # (9,)      (11,)
+        ids = labels.nonzero().squeeze(1)
+
+        keep = self.nms(boxes[ids], max_conf[ids], nms_threshold)   # .squeeze(1))
+
+        # print('boxes_batch', boxes[ids][keep].size())               # ('boxes_batch', (2, 4))
+        # print('labels_batch', labels[ids][keep].size())             # ('labels_batch', (2,))
+        # print('max_conf_batch', max_conf[ids][keep].size())         # ('max_conf_batch', (2,))
+        return boxes[ids][keep], labels[ids][keep], max_conf[ids][keep]
+
+    # ==================================================================================
+    def nms_batch(self, bboxes, scores, threshold=0.5):
+        '''
+        bboxes(tensor) [-1, N, 4]
+        scores(tensor) [-1, N,]
         '''
         x1 = bboxes[:,0]
         y1 = bboxes[:,1]
@@ -303,75 +383,77 @@ class DataEncoder:
             order = order[ids+1]
         return torch.LongTensor(keep)
 
-    def decode(self, loc, conf, use_gpu, nms_threshold=0.5):
+    def decode_batch(self, loc_batch, conf_batch, use_gpu, nms_threshold=0.5):
         '''
         將预测出的 loc/conf转换成真实的人脸框
-        loc [21842, 4]
-        conf [21824, 2]
+        loc [-1, 21842, 4]
+        conf [-1, 21824, 2]
         '''
-        print('loc', loc.size(), loc)
-        print('conf', conf.size(), conf)
         variances = [0.1, 0.2]
 
-        # variances = [0.1, 0.2]
-        # cxcy = (boxes[:, :2] + boxes[:, 2:])/2 - default_boxes[:, :2]       # [21824,2]
-        # cxcy /= variances[0] * default_boxes[:, 2:]
-        # wh = (boxes[:, 2:] - boxes[:, :2]) / default_boxes[:, 2:]           # [21824,2]  为什么会出现0宽度？？
-        # wh = torch.log(wh) / variances[1]                                   # Variable. log求自然对数
         if use_gpu:
-            cxcy = loc[:, :2].cuda() * variances[0] * self.default_boxes[:, 2:].cuda() + self.default_boxes[:, :2].cuda()
-            wh = torch.exp(loc[:, 2:] * variances[1]) * self.default_boxes[:, 2:].cuda()
-            boxes = torch.cat([cxcy-wh/2, cxcy+wh/2], 1)                        # [21824,4]
+            # cvcy:     [21824,2] --> [-1, 21824, 4]
+            cxcy = loc_batch[:, :, :2].cuda() * variances[0] * self.default_boxes[:, 2:].cuda() + self.default_boxes[:, :2].cuda()
+            # wh:       [21824,2] --> [-1, 21824, 4]
+            wh = torch.exp(loc_batch[:, :, 2:] * variances[1]) * self.default_boxes[:, 2:].cuda()
+            # boxes:    [21824,4]  -->  [-1, 21824, 4]
+            boxes_batch = torch.cat([cxcy-wh/2, cxcy+wh/2], 2)
         else:
-            cxcy = loc[:, :2] * variances[0] * self.default_boxes[:, 2:] + self.default_boxes[:, :2]
-            wh = torch.exp(loc[:, 2:] * variances[1]) * self.default_boxes[:, 2:]   # 返回一个新张量，包含输入input张量每个元素的指数
-            boxes = torch.cat([cxcy-wh/2, cxcy+wh/2], 1)                        # [21824,4]
+            # cvcy:     [21824,2] --> [-1, 21824, 4]
+            cxcy = loc_batch[:, :, :2] * variances[0] * self.default_boxes[:, 2:] + self.default_boxes[:, :2]
+            # wh:       [21824,2] --> [-1, 21824, 4]
+            wh = torch.exp(loc_batch[:, :, 2:] * variances[1]) * self.default_boxes[:, 2:]   # 返回一个新张量，包含输入input张量每个元素的指数
+            # boxes:    [21824,4]  -->  [-1, 21824, 4]
+            boxes_batch = torch.cat([cxcy-wh/2, cxcy+wh/2], 2)                        # [21824,4]
 
-        print('cxcy', cxcy.size(), cxcy)
-        print('wh', wh.size(), wh)
-        print('boxes', boxes.size(), boxes)
+        # print('cxcy', cxcy.size(), cxcy)
+        # print('wh', wh.size(), wh)
+        # print('boxes', boxes.size(), boxes)
 
-        conf[:, 0] = 0.4    # 置信度第0列（背景）设为0.4，下面再取最大值，目的是为了过滤置信度小于0.4的标签
-        max_conf, labels = conf.max(1)                          # [21842,1]
+        # 'conf_batch', (20, 21824, 2)
+        conf_batch[:, :, 0] = 0.4                           # 置信度第0列（背景）设为0.4，下面再取最大值，目的是为了过滤置信度小于0.4的标签
+        max_conf_batch, labels_batch = conf_batch.max(2)    # ('max_conf_batch', (20, 21824)) ('labels_batch', (20, 21824))
 
+        boxes_list = list()
+        labels_list = list()
+        max_conf_list = list()
         # print(max_conf)
         # print('labels', labels.long().sum().item())
-        if labels.long().sum().item() is 0:                     # 标签和为0？表示图片没有标签？
-            sconf, slabel = conf.max(0)
-            max_conf[slabel[0:5]] = sconf[0:5]
-            labels[slabel[0:5]] = 1
+        for index, labels in enumerate(labels_batch):
+            # TODO 以下这部分被注释掉（不知道作用）
+            if labels.long().sum().item() is 0:                         # 标签和为0？表示图片没有标签？
+                sconf, slabel = conf_batch[index].max(0)
+                max_conf_batch[index][slabel[0:5]] = sconf[0:5]
+                labels_batch[index][slabel[0:5]] = 1
+            # TODO 以上这部分被注释掉（不知道作用）
 
-        # print('labels', labels)
-        ids = labels.nonzero().squeeze(1)
-        print('ids', ids)
-        # print('boxes', boxes.size(), boxes[ids])
+            # print('labels', labels)
+            ids = labels.nonzero().squeeze(1)
+            # print('ids', ids)
+            # print('boxes', boxes.size(), boxes[ids])
 
-        keep = self.nms(boxes[ids], max_conf[ids], nms_threshold)   # .squeeze(1))
+            keep = self.nms(boxes_batch[index][ids], max_conf_batch[index][ids], nms_threshold)   # .squeeze(1))
+            boxes_list.append(boxes_batch[index][ids][keep])
+            labels_list.append(labels_batch[index][ids][keep])
+            max_conf_list.append(max_conf_batch[index][ids][keep])
 
-        return boxes[ids][keep], labels[ids][keep], max_conf[ids][keep]
+        # print('labels_list', boxes_list)
+        # print('labels_list', labels_list)
+        # print('max_conf_list', max_conf_list)
+        return boxes_list, labels_list, max_conf_list
 
 
 if __name__ == '__main__':
     dataencoder = DataEncoder()
     # dataencoder.test_iou()
 
-    # img = cv2.imread("Data/9488513_鄂A578U2_3.jpg")
-    # h, w, _ = img.shape
-    # img = cv2.resize(img, (1024, 1024))
-    # dataencoder.test_encode(torch.Tensor([[32./w, 266./h, 262./w, 351./h], [455./w, 138./h, 572./w, 179./h]]), img, torch.LongTensor([1, 1]))
-
-    img = cv2.imread("Data/557831_蓝_粤YXU501.jpg")
+    img = cv2.imread("Data/9488513_鄂A578U2_3.jpg")
     h, w, _ = img.shape
     img = cv2.resize(img, (1024, 1024))
-    # 12.0 15.0 231.0 110.0 1
-    # 1072.0 591.0 239.0 112.0 1
-    # 1461.0 275.0 94.0 36.0 1
-    # 414.0 5.0 1092.0 818.0 2
-    # 1185.0 16.0 435.0 352.0 2
-    boxes = torch.Tensor([[12. / w, 15. / h, 243. / w, 125. / h],
-                          [1072. / w, 591. / h, 1311. / w, 703. / h],
-                          [1461. / w, 275. / h, 1565. / w, 311. / h],
-                          [414. / w, 5. / h, 1506. / w, 823. / h],
-                          [1185. / w, 16. / h, 1620. / w, 368. / h]])
-    dataencoder.test_encode(boxes, img, torch.LongTensor([1, 1, 1, 2, 2]))
+    # w, h, _ = img.shape
+    # dataencoder.test_encode(torch.Tensor([[32, 266, 262, 351], [455, 138, 572, 179]]), img, torch.LongTensor([1, 1]))
+    dataencoder.test_encode(torch.Tensor([[32./w, 266./h, 262./w, 351./h], [455./w, 138./h, 572./w, 179./h]]), img, torch.LongTensor([1, 2]))
 
+    # print((dataencoder.default_boxes))
+    # boxes = torch.Tensor([[-8,-8,24,24],[400,400,500,500]])/1024
+    # dataencoder.encode(boxes,torch.Tensor([1,1]))

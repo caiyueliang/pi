@@ -5,16 +5,20 @@ import torch
 from torch.autograd import Variable
 import torch.nn.functional as F
 import cv2
+import time
+
+
 print('opencv version', cv2.__version__)
 
 
 def detect(im):
-    im = cv2.resize(im, (1024,1024))
-    im_tensor = torch.from_numpy(im.transpose((2,0,1)))
+    im = cv2.resize(im, (1024, 1024))
+    im_tensor = torch.from_numpy(im.transpose((2, 0, 1)))
     im_tensor = im_tensor.float().div(255)
+    im_tensor = Variable(torch.unsqueeze(im_tensor, 0), volatile=True)
     print(im_tensor.shape)
-    loc, conf = net(Variable(torch.unsqueeze(im_tensor, 0), volatile=True))
-    boxes, labels, probs = data_encoder.decode(loc.data.squeeze(0), F.softmax(conf.squeeze(0)).data)
+    loc, conf = net(im_tensor)
+    boxes, labels, probs = data_encoder.decode(loc[0], conf[0], False)
     return boxes, probs
 
 
@@ -119,35 +123,35 @@ def getFddbList(path, file_name):
 
 if __name__ == '__main__':
     net = FaceBox()
-    net.load_state_dict(torch.load('weight/faceboxes.pt', map_location=lambda storage, loc:storage))
+    net.load_state_dict(torch.load('weight/faceboxes300_lessthan10.pt', map_location=lambda storage, loc:storage))
     
     net.eval()
     data_encoder = DataEncoder()
-
     font = cv2.FONT_HERSHEY_SCRIPT_SIMPLEX
     
     # given video path, predict and show 
-    path = "/home/lxg/codedata/faceVideo/1208.mp4"
-    # testVideo(path)    
+    # path = "/home/lxg/codedata/faceVideo/1208.mp4"
+    # testVideo(path)
 
     # given image path, predict and show
-    root_path = "/home/lxg/codedata/widerFace/WIDER_train/images/0--Parade/"
-    picture = '0_Parade_marchingband_1_495.jpg'
-    # testIm(root_path + picture)
+    start = time.time()
+    root_path = "./img/"
+    picture = 'test.jpg'
+    testIm(root_path + picture)
 
-    # given image path, predict and show
-    fddb_path = "/home/lxg/codedata/fddb/2002/07/19/big/"
-    picture = 'img_463.jpg'
+    # # given image path, predict and show
+    # fddb_path = "/home/lxg/codedata/fddb/2002/07/19/big/"
+    # picture = 'img_463.jpg'
     # im = testIm(fddb_path + picture)
     # cv2.imwrite('picture/'+picture, im)
 
-    # given image file list, predict and show
-    path = '/home/lxg/codedata/fddb/'
-    file_name = 'FDDB-folds/FDDB-fold-01.txt'
+    # # given image file list, predict and show
+    # path = '/home/lxg/codedata/fddb/'
+    # file_name = 'FDDB-folds/FDDB-fold-01.txt'
     # testImList(path, file_name)
 
-    # get fddb preddict and write them to predict.txt
-    path = '/home/lxg/codedata/fddb/'
-    file_name = 'fddb.txt'
-    saveFddbData(path, file_name)
+    # # get fddb preddict and write them to predict.txt
+    # path = '/home/lxg/codedata/fddb/'
+    # file_name = 'fddb.txt'
+    # saveFddbData(path, file_name)
     # getFddbList(path, file_name)
