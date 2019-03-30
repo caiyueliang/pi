@@ -2,8 +2,6 @@ FROM ubuntu:18.04
 
 MAINTAINER "lijinchao"<lijinchao2007@163.com>
 
-WORKDIR .
-
 ENV TZ=Asia/Shanghai
 RUN echo $TZ > /etc/timezone
 RUN apt-get update
@@ -58,3 +56,11 @@ RUN conda install torchvision-cpu=0.2.1
 RUN rm -fr ~/.cache/pip \
     && apt-get autoclean \
     && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log 
+
+# ==========================================================================================================
+COPY ../../../Faceboxes /Faceboxes
+
+WORKDIR /Faceboxes
+
+CMD ["python", "predict.py"]
+# CMD ["python", "manage.py", "runserver", "--noreload", "--nothreading", "--settings=lpr.settings_docker_dev", "0.0.0.0:9501"]
