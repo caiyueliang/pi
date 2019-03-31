@@ -31,7 +31,7 @@ RUN apt-get -qq update
 # RUN apt-get -qq -y install g++
 
 # requirements.txt 在build.sh中会复制过来
-COPY requirements.txt /requirements.txt
+COPY Faceboxes/requirements.txt /requirements.txt
 
 RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r /requirements.txt
 
@@ -58,7 +58,7 @@ RUN rm -fr ~/.cache/pip \
     && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log 
 
 # ==========================================================================================================
-COPY ./* /Faceboxes
+COPY ./Faceboxes /Faceboxes
 
 WORKDIR /Faceboxes
 
