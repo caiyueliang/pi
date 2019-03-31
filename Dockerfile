@@ -58,7 +58,7 @@ RUN rm -fr ~/.cache/pip \
     && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log 
 
 # ==========================================================================================================
-COPY ../../../Faceboxes /Faceboxes
+COPY ./* /Faceboxes
 
 WORKDIR /Faceboxes
 

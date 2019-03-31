@@ -1,0 +1,8 @@
+opencv_python==3.4.0.12
+
+# numpy
+# scipy
+# scikit-learn
+# Pillow
+# tensorflow
+# opencv_python
