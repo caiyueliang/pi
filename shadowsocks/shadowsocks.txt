@@ -1,0 +1,49 @@
+ubuntu安装shadowsocks
+sudo apt-get update
+sudo apt-get install python-setuptools m2crypto
+sudo apt-get install shadowsocks
+
+启动shadowsocks
+sslocal -s 11.22.33.44 -p 50003 -k "123456" -l 1080 -t 600 -m aes-256-cfb
+或者 用配置文件的方式
+sslocal -c shadowsocks.json 
+
+shadowsocks.json内容：
+{
+    "server":"11.22.33.44",
+    "server_port":50003,
+    "local_port":1080,
+    "password":"123456",
+    "timeout":600,
+    "method":"aes-256-cfb"
+}
+server  你服务端的IP
+servier_port  你服务端的端口
+local_port  本地端口，一般默认1080
+passwd  ss服务端设置的密码
+timeout  超时设置 和服务端一样
+method  加密方法 和服务端一样
+
+
+后台运行：
+nohup sslocal -c /home/mudao/shadowsocks.json -& 
+
+==========================================================================
+遇到问题：
+Linux method chacha20-ietf-poly1305 not supported
+见：https://github.com/shadowsocks/shadowsocks/issues/1046
+
+python3
+安装libsodium:
+sudo bash libsodium.sh
+安装shadowsocks:
+pip install https://github.com/shadowsocks/shadowsocks/archive/master.zip -U
+
+
+Python 2.7.12. Ubuntu 16.04, 
+安装libsodium:
+sudo apt install libsodium-dev
+安装shadowsocks:
+pip install https://github.com/shadowsocks/shadowsocks/archive/master.zip -U
+测试可用 chacha20-ietf-poly1305 加密
+
