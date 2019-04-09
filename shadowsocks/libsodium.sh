@@ -3,7 +3,7 @@
 # If you suppose your server supports chacha and salsa,
 # this script must be run.
 
-wget https://download.libsodium.org/libsodium/releases/libsodium-1.0.17.tar.gz
+# wget https://download.libsodium.org/libsodium/releases/libsodium-1.0.17.tar.gz
 tar xvzf libsodium-1.0.17.tar.gz
 cd libsodium-1.0.17
 ./configure
