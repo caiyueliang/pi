@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)https://www.liangzl.com/get-article-detail-17135.html -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<title>ubuntu使用shadowsocks丶一个站在Java后端设计之路的男青年个人博客网站</title>
+	<meta name="keywords" content="个人博客,个人博客网站,个人网站制作,个人博客网站制作,个人网站欣赏,个人博客模板,java面试题,java教程,java,spring,springmvc,kindeditor">
+	<meta name="description" content="ubuntu使用shadowsocks丶一个站在web后端设计之路的男青年个人博客网站">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0,minimal-ui">
+	<link rel="shortcut icon" href="https://www.liangzl.com/img/favicon.ico" title="Favicon">
+<link rel="stylesheet" href="./ubuntu使用shadowsocks_files/font-awesome.min.css">
+<script type="text/javascript" async="" src="./ubuntu使用shadowsocks_files/uoswsqsx.js"></script><script type="text/javascript" src="./ubuntu使用shadowsocks_files/jquery.min.js"></script>
+<script type="text/javascript" src="./ubuntu使用shadowsocks_files/jquery.lazyload.min.js"></script>
+<script type="text/javascript" src="./ubuntu使用shadowsocks_files/jquery-migrate.min.js"></script>
+<script src="./ubuntu使用shadowsocks_files/layer.js"></script><link rel="stylesheet" href="./ubuntu使用shadowsocks_files/layer.css" id="layui_layer_skinlayercss" style="">
+	<link rel="stylesheet" href="./ubuntu使用shadowsocks_files/style.css">
+<!-- 		<link rel='stylesheet' href='css/blog.min.css'/> -->
+		<link rel="stylesheet" href="./ubuntu使用shadowsocks_files/zenburn.css">
+	<!-- 设置Css -->
+	<style>
+		body {
+			background: #d9d3c1 url('img/blog/bigbannerpic_01.png') no-repeat center 0;
+		}
+		.loading-bar {
+			background: #db1e1e;
+		}
+		.recentcomments a {
+			display: inline !important;
+			padding: 0 !important;
+			margin: 0 !important;
+		}
+	</style>
+	<script type="application/ld+json">
+        {
+            "@context": "https://ziyuan.baidu.com/contexts/cambrian.jsonld",
+            "@id": "https://www.liangzl.com/get-article-detail-17135.html",
+            "appid": "1585571422106716",
+            "title": "ubuntu使用shadowsocks,一个站在Java后端设计之路的男青年个人博客网站",
+            "images": [
+                "https://www.liangzl.com/editorImages/cawler/20170222193904_255.jpg"
+            ], 
+            "pubDate": "2018-09-09T10:09:56" 
+        }
+    </script>
+</head>
+
+<body class="single single-post single-format-standard ajax_load glass_nav widget_fixed">
+    <!--头部-->
+<!--头部-->
+<header id="header" class="glass_w" style="background: #d9d3c1 url(&#39;img/blog/bigbannerpic_01.png&#39;) no-repeat center 0;">
+	<div class="header-mask-sd m_hide">
+		<div class="header-mask-blur">
+			<div class="header-mask" style="background: #d9d3c1 url(&#39;img/blog/bigbannerpic_01.png&#39;) no-repeat center 0;"></div>
+			<div class="header-mask-bg"></div>
+		</div>
+	</div>
+	<div class="header-inner">
+		<div class="container clearfix">
+			<!--logo-->
+			<div class="header-logo">
+				<div class="logo">
+					<a href="https://www.liangzl.com/get-article-detail-17135.html#" title="logo"><img alt="个人博客" src="./ubuntu使用shadowsocks_files/logo.png"> </a>
+				</div>
+			</div>
+			<!--头部导航-->
+			<nav class="header-menu">
+				<div class="header-menu-wrapper">
+					<ul class="header-menu-list">
+							<li class="menu-item menu-item-type-post_type menu-item-object-page">
+								<a href="https://www.liangzl.com/index.html">首页</a>
+							</li>
+							<li class="menu-item menu-item-type-post_type menu-item-object-page">
+								<a target="_blank" href="https://www.liangzl.com/get-mood.html">心情</a>
+							</li>
+							<li class="menu-item menu-item-type-post_type menu-item-object-page">
+								<a target="_blank" href="https://www.liangzl.com/get-about-me.html">关于我</a>
+							</li>
+							<li class="menu-item menu-item-type-post_type menu-item-object-page">
+								<a target="_blank" href="https://www.liangzl.com/get-comment-.html">留言板</a>
+							</li>
+							<li class="menu-item menu-item-type-post_type menu-item-object-page">
+								<a target="_blank" href="https://www.liangzl.com/get-friend-link.html">优秀个人博客</a>
+							</li>
+							<li class="menu-item menu-item-type-post_type menu-item-object-page">
+								<a target="_blank" href="javascript:void(window.open(&#39;//shang.qq.com/wpa/qunwpa?idkey=577c85f4111461519c509938378107086615a31f15407cb8592ec5bba270cf01&#39;))">web技术交流QQ群:172816590</a>
+							</li>
+					</ul>
+				</div>
+			</nav>
+			<ul class="header-tool header-menu-list">
+				<a href="javascript:void(0)" class="menu-toggle"></a>
+				<li class="navbar-login menu-item-has-children m_hide">
+					<a href="https://www.liangzl.com/get-article-detail-17135.html#" onclick="return false;" style="color: yellow" class="navbar-btn">友链申请</a>
+				</li>
+				<li class="navbar-skin menu-item-has-children m_hide">
+					<a href="javascript:void(0)" class="skin-btn" style="color: #990033">皮肤</a>
+				</li>
+				<!-- 搜索栏 -->
+				<li class="search m_hide">
+					<input type="text" class="search-form-input text" style="border-color: red;" onkeydown="if(event.keyCode==13)searchWord()" id="keyWord" name="tittle" placeholder="站内文章查找..."> 
+					<a href="javaScript:void(0)" onclick="searchWord()" style="color: yellow"> 搜索</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div id="header-modal" class="with-tooltip m_hide" data-tooltip="茶馆、岛、慵懒的猫...都是美好的时光..."></div>
+</header>    <!-- bt搜索 -->
+	<section id="content">
+		<div class="container">
+			<div class="content-inner">
+				<div class="main_header colbox m_hide">
+					<!--显示评论数目-->
+<div class="avatar_box col">
+	<div class="me_img">
+		<div class="me_avatar">
+			<img src="./ubuntu使用shadowsocks_files/default-avatar.png">
+		</div>
+		<ul class="me_name">
+			<li>
+				<p class="me_num">41726</p>
+				<p class="me_title">文章</p>
+			</li>
+			<li>
+				<p class="me_num">332</p>
+				<p class="me_title">评论</p>
+			</li>
+			<li>
+				<p class="me_num">29</p>
+				<p class="me_title">友链</p>
+			</li>
+		</ul>
+	</div>
+	<div class="bulletin">
+		<ul class="bulletin_list">
+			<li style="display:none">最近新加了换肤功能，大家多来逛逛吧~~~~</li>
+			<li style="display:none">喜欢这个网站的朋友可以加一下QQ群,我们一起交流技术。</li>
+		</ul>
+	</div>
+</div>					<!--小菜单-->
+<div class="main-menu col">
+	<div class="header-menu-wrapper">
+		<ul class="header-menu-list">
+							<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children">
+					<a target="_blank" href="https://www.liangzl.com/get-main-page-6-%E6%85%A2%E7%94%9F%E6%B4%BB-.html" style="color:#990033;font-weight: bold;">慢生活</a>
+				</li>
+				<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children">
+					<a target="_blank" href="https://www.liangzl.com/get-main-page-7-%E5%AD%A6%E6%97%A0%E6%AD%A2%E5%A2%83-.html" style="color:#990033;font-weight: bold;">学无止境</a>
+				</li>
+				<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children">
+					<a target="_blank" href="https://www.liangzl.com/get-main-page-8-%E6%A8%A1%E6%9D%BF%E5%88%86%E4%BA%AB-.html" style="color:#990033;font-weight: bold;">模板分享</a>
+				</li>
+				<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children">
+					<a target="_blank" href="https://www.liangzl.com/get-main-page-9-%E9%9D%A2%E8%AF%95%E9%A2%98%E5%BA%93-.html" style="color:#990033;font-weight: bold;">面试题库</a>
+				</li>
+				<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children">
+					<a target="_blank" href="https://www.liangzl.com/get-main-page-10-%E7%AB%99%E9%95%BF%E6%96%B0%E9%97%BB-.html" style="color:#990033;font-weight: bold;">站长新闻</a>
+				</li>
+				<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children">
+					<a target="_blank" href="https://www.liangzl.com/get-main-page-32-IT%E8%B5%84%E8%AE%AF-.html" style="color:#990033;font-weight: bold;">IT资讯</a>
+				</li>
+		</ul>
+	</div>
+</div>				</div>
+ 				<div class="main_body colbox">
+					<!--pc端left star-->
+					<aside id="sidebar" class="sidebar-pc">
+						<!--left 自我介绍-->
+						<div class="m_hide"><div id="about">
+	<p class="me_content">
+		Hi，欢迎来到梁钟霖个人博客网站。本博客是自己通过代码构建的。前端html，后端java技术。对这些技术有兴趣的朋友可以加入qq群<span style="color: red">172816590</span>，我们一起学习进步。嘿嘿，欢迎来到梁子个人博客！~<br><span style="color: blue">投稿邮箱:419400980@qq.com</span></p>
+	<div class="social_link">
+		<ul class="clearfix">
+			<li>
+				<a href="javascript:void(0)" class="tooltip tooltip-bottom" data-tooltip="微博：...."><i class="fa fa-weibo"></i></a>
+			</li>
+			<li>
+				<a href="https://wpa.qq.com/msgrd?v=3&amp;uin=419400980&amp;site=qq&amp;menu=yes" target="target" class="tooltip tooltip-bottom" data-tooltip="QQ：419400980"><i class="fa fa-qq"></i></a>
+			</li>
+			<li>
+				<a href="javascript:void(0)" class="tooltip tooltip-bottom" data-tooltip="微信：fakeyou0007"><i class="fa fa-weixin"></i></a>
+			</li>
+			<li>
+				<a href="javascript:void(0)" class="tooltip tooltip-bottom" data-tooltip="Github：...."><i class="fa fa-github"></i></a>
+			</li>
+			<li>
+				<a href="javascript:void(0)" class="tooltip tooltip-bottom" data-tooltip="...."><i class="fa fa-dribbble"></i></a>
+			</li>
+		</ul>
+	</div>
+</div></div>
+						<div id="widget" class="widgets">
+							<!--返利群-->
+<!-- 							<aside id="tag_cloud-2" class="widget widget_tag_cloud"> 
+	<h5 class="widget-title"><span style="color: red;font-weight: bold;">淘宝返利微信群，扫码入群!</span></h5>
+	<div class="tagcloud">
+		<img alt="" src="/img/rebate.png">
+	</div>
+</aside> -->
+							<!--广告2-->
+<aside class="widget widget_categories" id="newArticle">
+	<h5 class="widget-title"><span style="color: red;font-weight: bold;">网站标签</span></h5>
+	<div id="_p14d3ncvce" style="width: 100%;"><div style="padding-right:0px;"><div style="padding-top:0px;"><div style="visibility:visible;"><iframe width="270" frameborder="0" height="800" scrolling="no" src="./ubuntu使用shadowsocks_files/s.html"></iframe></div></div></div></div><script type="text/javascript" src="./ubuntu使用shadowsocks_files/lgyphhoyy.js"></script>
+</aside>
+<script>
+	$(function() {
+		changeColor(2);
+	});
+	// 动态改变颜色
+	function changeColor(type) {
+		type = parseInt(type);
+		setTimeout(function(){
+			if (type == 1) {
+				$("#advertColor").attr("style","color:" + getRandomColor() + ";font-weight: bold;");
+				$("#advertColor").text("友情链接");
+				changeColor(2);
+			} else if (type == 2) {
+				$("#advertColor").attr("style","color:" + getRandomColor() + ";font-weight: bold;");
+				$("#advertColor").text("友情链接");
+				changeColor(3);
+			} else if (type == 3) {
+				$("#advertColor").attr("style","color:" + getRandomColor() + ";font-weight: bold;");
+				$("#advertColor").text("友情链接");
+				changeColor(4);
+			} else if (type == 4) {
+				$("#advertColor").attr("style","color:" + getRandomColor() + ";font-weight: bold;");
+				$("#advertColor").text("友情链接");
+				changeColor(5);
+			} else if (type == 5) {
+				$("#advertColor").attr("style","color:" + getRandomColor() + ";font-weight: bold;");
+				$("#advertColor").text("友情链接");
+				changeColor(1);
+			}
+		},200);
+	}
+	// 随机颜色
+	function getRandomColor() {
+		var c = '#';
+		var cArray = [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A',
+				'B', 'C', 'D', 'E', 'F' ];
+		for (var i = 0; i < 6; i++) {
+			var cIndex = Math.round(Math.random() * 15);
+			c += cArray[cIndex];
+		}
+		return c;
+	}
+</script>							<!--广告-->
+<aside class="textwidget cs_widget_slider " style="position: relative;width: 100%;height: auto;overflow: hidden;z-index: 0">
+<!-- <aside class="widget_tag_cloud"> -->
+<!-- 	<div class="nivoSlider" > -->
+<!-- 		<a href="javaScript:void(0)" target="_black"> -->
+<!-- 					<img class="" src="img/blog/advert_01.jpg" data-thumb="img/blog/advert_01.jpg" title="" /> -->
+			<script src="./ubuntu使用shadowsocks_files/showdetail.php"></script>
+<!-- 		</a> -->
+<!--  		<a href="javaScript:void(0)" target="_black">  -->
+<!-- 					<img class="" src="img/blog/advert_01.jpg" data-thumb="img/blog/advert_01.jpg" title="" /> -->
+<!-- 			<script src="https://j.qiqivv.com:4433/blog/showdetail.php?z=127181"></script> -->
+<!-- 		</a> -->
+<!-- <script src="https://j.qiqivv.com:4433/blog/showdetail.php?z=127192"></script> -->
+<!-- 	</div> -->
+</aside>
+<!-- <script type="text/javascript" src="//unioncode.liangzl.com/snftkwwcfqum.js"></script> -->							<!--标签-->
+<aside id="tag_cloud-2" class="widget widget_tag_cloud"> 
+	<h5 class="widget-title"><span style="color: #89DCC9;font-weight: bold;">相关推荐</span></h5>
+	<div class="tagcloud">
+					<a href="https://www.liangzl.com/get-search-page-centos-.html" target="_blank" class="tag-link-31 tag-link-position-1" title="centos" style="font-size: 12px;">centos</a>
+			<a href="https://www.liangzl.com/get-search-page-vmware-.html" target="_blank" class="tag-link-31 tag-link-position-1" title="vmware" style="font-size: 12px;">vmware</a>
+			<a href="https://www.liangzl.com/get-search-page-linux-.html" target="_blank" class="tag-link-31 tag-link-position-1" title="linux" style="font-size: 12px;">linux</a>
+			<a href="https://www.liangzl.com/get-search-page-ajax-.html" target="_blank" class="tag-link-31 tag-link-position-1" title="ajax" style="font-size: 12px;">ajax</a>
+			<a href="https://www.liangzl.com/get-search-page-mysql-.html" target="_blank" class="tag-link-31 tag-link-position-1" title="mysql" style="font-size: 12px;">mysql</a>
+			<a href="https://www.liangzl.com/get-search-page-xmanager-.html" target="_blank" class="tag-link-31 tag-link-position-1" title="xmanager" style="font-size: 12px;">xmanager</a>
+			<a href="https://www.liangzl.com/get-search-page-java-.html" target="_blank" class="tag-link-31 tag-link-position-1" title="java" style="font-size: 12px;">java</a>
+			<a href="https://www.liangzl.com/get-search-page-html%E6%A8%A1%E6%9D%BF-.html" target="_blank" class="tag-link-31 tag-link-position-1" title="html模板" style="font-size: 12px;">html模板</a>
+			<a href="https://www.liangzl.com/get-search-page-%E9%82%AE%E7%AE%B1-.html" target="_blank" class="tag-link-31 tag-link-position-1" title="邮箱" style="font-size: 12px;">邮箱</a>
+			<a href="https://www.liangzl.com/get-search-page-ip-.html" target="_blank" class="tag-link-31 tag-link-position-1" title="ip" style="font-size: 12px;">ip</a>
+			<a href="https://www.liangzl.com/get-search-page-%E9%98%B2%E7%81%AB%E5%A2%99-.html" target="_blank" class="tag-link-31 tag-link-position-1" title="防火墙" style="font-size: 12px;">防火墙</a>
+			<a href="https://www.liangzl.com/get-search-page-JDK-.html" target="_blank" class="tag-link-31 tag-link-position-1" title="JDK" style="font-size: 12px;">JDK</a>
+			<a href="https://www.liangzl.com/get-search-page-%E5%85%B3%E9%94%AE%E8%AF%8D-.html" target="_blank" class="tag-link-31 tag-link-position-1" title="关键词" style="font-size: 12px;">关键词</a>
+			<a href="https://www.liangzl.com/get-search-page-java%E6%95%99%E7%A8%8B-.html" target="_blank" class="tag-link-31 tag-link-position-1" title="java教程" style="font-size: 12px;">java教程</a>
+			<a href="https://www.liangzl.com/get-search-page-static-.html" target="_blank" class="tag-link-31 tag-link-position-1" title="static" style="font-size: 12px;">static</a>
+			<a href="https://www.liangzl.com/get-search-page-%E5%86%92%E6%B3%A1-.html" target="_blank" class="tag-link-31 tag-link-position-1" title="冒泡" style="font-size: 12px;">冒泡</a>
+	</div>
+</aside>							<!--点击排行-->
+<aside class="widget widget_categories" id="ranking">
+	<h5 class="widget-title"><span style="color: #E41637;font-weight: bold;">点击排行</span></h5>
+	<ul>
+					<li class="cat-item cat-item-1">
+				<a target="_blank" href="https://www.liangzl.com/get-article-detail-26668.html">汇编跳转指令: JMP、JECXZ、JA、JB、JG、JL、JE、JZ、JS、JC、JO、JP 等</a>
+			</li>
+			<li class="cat-item cat-item-1">
+				<a target="_blank" href="https://www.liangzl.com/get-article-detail-10.html">2019年125条常见的java面试笔试题汇总(五)</a>
+			</li>
+			<li class="cat-item cat-item-1">
+				<a target="_blank" href="https://www.liangzl.com/get-article-detail-7.html">2019年125条常见的java面试笔试题汇总(三)</a>
+			</li>
+			<li class="cat-item cat-item-1">
+				<a target="_blank" href="https://www.liangzl.com/get-article-detail-525.html">分布式事务之TCC事务</a>
+			</li>
+			<li class="cat-item cat-item-1">
+				<a target="_blank" href="https://www.liangzl.com/get-article-detail-17693.html">入坑Flutter ,弃坑React-Native(简单体验)</a>
+			</li>
+			<li class="cat-item cat-item-1">
+				<a target="_blank" href="https://www.liangzl.com/get-article-detail-16472.html">SpringBoot 2.x 集成QQ邮箱、网易系邮箱、Gmail邮箱发送邮件</a>
+			</li>
+			<li class="cat-item cat-item-1">
+				<a target="_blank" href="https://www.liangzl.com/get-article-detail-15821.html">电信/移动/联通三网通用免流方法，SSR免流教程</a>
+			</li>
+			<li class="cat-item cat-item-1">
+				<a target="_blank" href="https://www.liangzl.com/get-article-detail-3812.html">java软件工程师简历中项目经验怎么写？</a>
+			</li>
+			<li class="cat-item cat-item-1">
+				<a target="_blank" href="https://www.liangzl.com/get-article-detail-15383.html">Angular - ng-repeat高级用法</a>
+			</li>
+			<li class="cat-item cat-item-1">
+				<a target="_blank" href="https://www.liangzl.com/get-article-detail-11780.html">华硕fx60vm安装macOS10.13.6和Windows10双系统</a>
+			</li>
+			<li class="cat-item cat-item-1">
+				<a target="_blank" href="https://www.liangzl.com/get-article-detail-5.html">2019年125条常见的java面试笔试题汇总(一)</a>
+			</li>
+			<li class="cat-item cat-item-1">
+				<a target="_blank" href="https://www.liangzl.com/get-article-detail-824.html">同学两亿岁百度云资源高清完整无删减「bd1024p/1080p/Mp4中字」云网盘链接下载</a>
+			</li>
+			<li class="cat-item cat-item-1">
+				<a target="_blank" href="https://www.liangzl.com/get-article-detail-820.html">swagger注释@API详细说明</a>
+			</li>
+			<li class="cat-item cat-item-1">
+				<a target="_blank" href="https://www.liangzl.com/get-article-detail-9289.html">福利篇：免费csdn vip账号分享</a>
+			</li>
+			<li class="cat-item cat-item-1">
+				<a target="_blank" href="https://www.liangzl.com/get-article-detail-3879.html">十问 TiDB ：关于架构设计的一些思考</a>
+			</li>
+	</ul>
+</aside>
+							<!--最新文章-->
+<aside class="widget widget_categories" id="newArticle">
+	<h5 class="widget-title"><span style="color: #4ec431;font-weight: bold;">最新文章</span></h5>
+	<ul>
+					<li class="cat-item cat-item-1">
+				<a target="_blank" href="https://www.liangzl.com/get-article-detail-123402.html">基于 Laravel 的在线点播系统 MeEdu v1.0 版本上线</a>
+			</li>
+			<li class="cat-item cat-item-1">
+				<a target="_blank" href="https://www.liangzl.com/get-article-detail-123401.html">GoFrame v1.6.0 发布，Go 应用开发框架</a>
+			</li>
+			<li class="cat-item cat-item-1">
+				<a target="_blank" href="https://www.liangzl.com/get-article-detail-123400.html">PESCMS Ticket 客服工单系统 v1.2.4 发布</a>
+			</li>
+			<li class="cat-item cat-item-1">
+				<a target="_blank" href="https://www.liangzl.com/get-article-detail-123399.html">阿里巴巴TXD前端小报 - 2019年3月刊</a>
+			</li>
+			<li class="cat-item cat-item-1">
+				<a target="_blank" href="https://www.liangzl.com/get-article-detail-123398.html">CentOS_7 FTP安装</a>
+			</li>
+			<li class="cat-item cat-item-1">
+				<a target="_blank" href="https://www.liangzl.com/get-article-detail-123397.html">WiFi攻击中“核武器”</a>
+			</li>
+			<li class="cat-item cat-item-1">
+				<a target="_blank" href="https://www.liangzl.com/get-article-detail-123396.html">BFG Repo-Cleaner - 快速清除Git提交历史中的特定文件</a>
+			</li>
+			<li class="cat-item cat-item-1">
+				<a target="_blank" href="https://www.liangzl.com/get-article-detail-123395.html">Course Schedule 1 &amp; 2</a>
+			</li>
+			<li class="cat-item cat-item-1">
+				<a target="_blank" href="https://www.liangzl.com/get-article-detail-123394.html">折腾Java设计模式之备忘录模式</a>
+			</li>
+			<li class="cat-item cat-item-1">
+				<a target="_blank" href="https://www.liangzl.com/get-article-detail-123393.html">解决闭包问题</a>
+			</li>
+			<li class="cat-item cat-item-1">
+				<a target="_blank" href="https://www.liangzl.com/get-article-detail-123392.html">chrome无法离线按照扩展程序</a>
+			</li>
+			<li class="cat-item cat-item-1">
+				<a target="_blank" href="https://www.liangzl.com/get-article-detail-123391.html">OSG增加文件搜索路径</a>
+			</li>
+			<li class="cat-item cat-item-1">
+				<a target="_blank" href="https://www.liangzl.com/get-article-detail-123390.html">《Netkiller Spring Cloud 手札》之 Spring Cloud Consol</a>
+			</li>
+			<li class="cat-item cat-item-1">
+				<a target="_blank" href="https://www.liangzl.com/get-article-detail-123389.html">flowable6.4.1+springboot使用dmn</a>
+			</li>
+			<li class="cat-item cat-item-1">
+				<a target="_blank" href="https://www.liangzl.com/get-article-detail-123388.html">vim快速操作</a>
+			</li>
+	</ul>
+</aside>
+							<!--博客统计-->
+<aside id="efanblogstat-2" class="widget widget_blogstat">
+	<h5 class="widget-title"><span style="color: #1692e4;font-weight: bold;">每日站长统计</span></h5>
+	<ul>
+		<li>总数&nbsp;    &nbsp;&nbsp;IP：5646 条</li>
+		<li>移动&nbsp;    &nbsp;&nbsp;IP：1173 条</li>
+		<li>电脑&nbsp;    &nbsp;&nbsp;IP：4473 条</li>
+		<li>操作总数：16481 条</li>
+		<li>运行天数：843 天</li>
+		<li>建站时间：2016-12-28</li>
+		<li>最后更新：2019-04-09 </li>
+	</ul>
+</aside>							<!--最新评论-->
+<aside class="widget cs_widget_comment">
+	<h5 class="widget-title"><span style="color: #9A08EF;font-weight: bold;">最新评论</span></h5>
+	<div class="textwidget" id="comment-list">
+		<ul>
+							<li class="colbox">
+					<p class="col avatar-box avatar">
+						<img class="lazy" data-original="img/user/50.png" data-echo="img/user/50.png" height="64" width="64">
+					</p>
+					<p class="col comment_box">
+						<a target="_blank" class="with-tooltip" href="https://www.liangzl.com/get-article-detail-240.html" data-tooltip="java毕业设计代写，定制。项目代写，加Q419400980">
+							<span class="s_name">测试回复:</span>
+							<span class="s_desc">&lt;script type="text/javascript"&gt; alert('可以的'); &lt;/script&gt;</span>
+						</a>
+					</p>
+				</li>
+				<li class="colbox">
+					<p class="col avatar-box avatar">
+						<img class="lazy" data-original="img/user/265.png" data-echo="img/user/265.png" height="64" width="64">
+					</p>
+					<p class="col comment_box">
+						<a target="_blank" class="with-tooltip" href="https://www.liangzl.com/get-article-detail-123172.html" data-tooltip="pycharm编辑、运行abaqus python程序详解，kernel问题处理等">
+							<span class="s_name">助手的杯面:</span>
+							<span class="s_desc">梁老师您好，我使用了您提供的方法，觉得非常好用，感谢您的分享！但是在实际运用中还是碰到了一些问题，比如:
+mdb.models['Model A'].parts['Part A'].BaseSolidExtrude()
+在编辑这一行代码的时候，parts['Part A'].后面没有提示出Part对象的方法和属性。在查看源码之后我猜测是abaqus.py这个文件里的方法没有罗列完全的原因，想请问您以后会继续更新这个文件吗？</span>
+						</a>
+					</p>
+				</li>
+				<li class="colbox">
+					<p class="col avatar-box avatar">
+						<img class="lazy" data-original="img/user/338.png" data-echo="img/user/338.png" height="64" width="64">
+					</p>
+					<p class="col comment_box">
+						<a target="_blank" class="with-tooltip" href="https://www.liangzl.com/get-article-detail-12366.html" data-tooltip="详解-斗鱼弹幕API-接入(斗鱼弹幕服务器第三方接入协议)">
+							<span class="s_name">胡杰:</span>
+							<span class="s_desc">发弹幕是什么格式</span>
+						</a>
+					</p>
+				</li>
+				<li class="colbox">
+					<p class="col avatar-box avatar">
+						<img class="lazy" data-original="img/user/68.png" data-echo="img/user/68.png" height="64" width="64">
+					</p>
+					<p class="col comment_box">
+						<a target="_blank" class="with-tooltip" href="https://www.liangzl.com/get-article-detail-12366.html" data-tooltip="详解-斗鱼弹幕API-接入(斗鱼弹幕服务器第三方接入协议)">
+							<span class="s_name">艾克:</span>
+							<span class="s_desc">end=0 是结尾标识符吧  应该是写入了4个字节  为什么算长度只算一个字节</span>
+						</a>
+					</p>
+				</li>
+				<li class="colbox">
+					<p class="col avatar-box avatar">
+						<img class="lazy" data-original="img/user/298.png" data-echo="img/user/298.png" height="64" width="64">
+					</p>
+					<p class="col comment_box">
+						<a target="_blank" class="with-tooltip" href="https://www.liangzl.com/get-article-detail-114916.html" data-tooltip="idea 2019最新注册码（激活码）永久破解">
+							<span class="s_name">马云:</span>
+							<span class="s_desc">不管用哦，key is invalid!</span>
+						</a>
+					</p>
+				</li>
+				<li class="colbox">
+					<p class="col avatar-box avatar">
+						<img class="lazy" data-original="img/user/96.png" data-echo="img/user/96.png" height="64" width="64">
+					</p>
+					<p class="col comment_box">
+						<a target="_blank" class="with-tooltip" href="https://www.liangzl.com/get-article-detail-8017.html" data-tooltip="解决Chrome 错误“net::ERR_INCOMPLETE_CHUNKED_ENCODING”">
+							<span class="s_name">langxiao:</span>
+							<span class="s_desc">特别感谢，这个问题困扰很久，终于解决了，欣喜若狂啊，感谢！！！</span>
+						</a>
+					</p>
+				</li>
+				<li class="colbox">
+					<p class="col avatar-box avatar">
+						<img class="lazy" data-original="img/user/158.png" data-echo="img/user/158.png" height="64" width="64">
+					</p>
+					<p class="col comment_box">
+						<a target="_blank" class="with-tooltip" href="https://www.liangzl.com/get-article-detail-3824.html" data-tooltip="Android o NotificationManager.cancel()无效">
+							<span class="s_name">ethan:</span>
+							<span class="s_desc">使用deleteNotificationChannel()</span>
+						</a>
+					</p>
+				</li>
+				<li class="colbox">
+					<p class="col avatar-box avatar">
+						<img class="lazy" data-original="img/user/158.png" data-echo="img/user/158.png" height="64" width="64">
+					</p>
+					<p class="col comment_box">
+						<a target="_blank" class="with-tooltip" href="https://www.liangzl.com/get-article-detail-196.html" data-tooltip="提高个人博客网站访问速度的方法有哪些？">
+							<span class="s_name">123:</span>
+							<span class="s_desc">测试</span>
+						</a>
+					</p>
+				</li>
+				<li class="colbox">
+					<p class="col avatar-box avatar">
+						<img class="lazy" data-original="img/user/19.png" data-echo="img/user/19.png" height="64" width="64">
+					</p>
+					<p class="col comment_box">
+						<a target="_blank" class="with-tooltip" href="https://www.liangzl.com/get-article-detail-7727.html" data-tooltip="流氓软件：“正在加速中”">
+							<span class="s_name">12121:</span>
+							<span class="s_desc">system boost卸吧</span>
+						</a>
+					</p>
+				</li>
+				<li class="colbox">
+					<p class="col avatar-box avatar">
+						<img class="lazy" data-original="img/user/112.png" data-echo="img/user/112.png" height="64" width="64">
+					</p>
+					<p class="col comment_box">
+						<a target="_blank" class="with-tooltip" href="https://www.liangzl.com/get-article-detail-240.html" data-tooltip="java毕业设计代写，定制。项目代写，加Q419400980">
+							<span class="s_name">文娱帝国:</span>
+							<span class="s_desc">写的很好，很喜欢</span>
+						</a>
+					</p>
+				</li>
+		</ul>
+	</div>
+</aside>						</div>
+					</aside>
+					<!--pc端left end-->
+					<!--内容主体 star-->
+					<aside id="sidebar" class="sidebar-phone">
+						<div id="widget" class="widgets">
+							<!--导航-->
+<aside class="widget cs_widget_comment">
+	<h5 class="widget-title"><span style="color: #E41637;font-weight: bold;">博客导航栏</span></h5>
+	<div class="textwidget" id="comment-list">
+		<ul>
+			<li class="search">
+				<form method="get" id="">
+					<input type="text" style="width: 80%" class="search-form-input text" onkeydown="if(event.keyCode==13)searchWordPhone()" id="keyWordPhone" placeholder="站内文章查找..."> 
+					<a href="javascript:void(0)" onclick="searchWordPhone()" style="color: black" class="skin-btn">搜索</a>
+				</form>
+			</li>
+							<li class="colbox">
+					<p class="col avatar-box avatar">
+						<img src="./ubuntu使用shadowsocks_files/default-avatar.png" data-echo="img/blog/default-avatar.png" class="avatar" height="64" width="64">
+					</p>
+					<p class="col comment_box">
+						<a class="with-tooltip" href="https://www.liangzl.com/get-main-page-6-%E6%85%A2%E7%94%9F%E6%B4%BB-.html" data-tooltip="">
+							<span class="s_name">:</span>
+							</a><a style="color: dodgerblue" class="s_desc" href="https://www.liangzl.com/get-main-page-6-%E6%85%A2%E7%94%9F%E6%B4%BB-.html">&nbsp;&nbsp;&nbsp;慢生活</a>
+						
+					</p>
+				</li>
+				<li class="colbox">
+					<p class="col avatar-box avatar">
+						<img src="./ubuntu使用shadowsocks_files/default-avatar.png" data-echo="img/blog/default-avatar.png" class="avatar" height="64" width="64">
+					</p>
+					<p class="col comment_box">
+						<a class="with-tooltip" href="https://www.liangzl.com/get-main-page-7-%E5%AD%A6%E6%97%A0%E6%AD%A2%E5%A2%83-.html" data-tooltip="">
+							<span class="s_name">:</span>
+							</a><a style="color: dodgerblue" class="s_desc" href="https://www.liangzl.com/get-main-page-7-%E5%AD%A6%E6%97%A0%E6%AD%A2%E5%A2%83-.html">&nbsp;&nbsp;&nbsp;学无止境</a>
+						
+					</p>
+				</li>
+				<li class="colbox">
+					<p class="col avatar-box avatar">
+						<img src="./ubuntu使用shadowsocks_files/default-avatar.png" data-echo="img/blog/default-avatar.png" class="avatar" height="64" width="64">
+					</p>
+					<p class="col comment_box">
+						<a class="with-tooltip" href="https://www.liangzl.com/get-main-page-8-%E6%A8%A1%E6%9D%BF%E5%88%86%E4%BA%AB-.html" data-tooltip="">
+							<span class="s_name">:</span>
+							</a><a style="color: dodgerblue" class="s_desc" href="https://www.liangzl.com/get-main-page-8-%E6%A8%A1%E6%9D%BF%E5%88%86%E4%BA%AB-.html">&nbsp;&nbsp;&nbsp;模板分享</a>
+						
+					</p>
+				</li>
+				<li class="colbox">
+					<p class="col avatar-box avatar">
+						<img src="./ubuntu使用shadowsocks_files/default-avatar.png" data-echo="img/blog/default-avatar.png" class="avatar" height="64" width="64">
+					</p>
+					<p class="col comment_box">
+						<a class="with-tooltip" href="https://www.liangzl.com/get-main-page-9-%E9%9D%A2%E8%AF%95%E9%A2%98%E5%BA%93-.html" data-tooltip="">
+							<span class="s_name">:</span>
+							</a><a style="color: dodgerblue" class="s_desc" href="https://www.liangzl.com/get-main-page-9-%E9%9D%A2%E8%AF%95%E9%A2%98%E5%BA%93-.html">&nbsp;&nbsp;&nbsp;面试题库</a>
+						
+					</p>
+				</li>
+				<li class="colbox">
+					<p class="col avatar-box avatar">
+						<img src="./ubuntu使用shadowsocks_files/default-avatar.png" data-echo="img/blog/default-avatar.png" class="avatar" height="64" width="64">
+					</p>
+					<p class="col comment_box">
+						<a class="with-tooltip" href="https://www.liangzl.com/get-main-page-10-%E7%AB%99%E9%95%BF%E6%96%B0%E9%97%BB-.html" data-tooltip="">
+							<span class="s_name">:</span>
+							</a><a style="color: dodgerblue" class="s_desc" href="https://www.liangzl.com/get-main-page-10-%E7%AB%99%E9%95%BF%E6%96%B0%E9%97%BB-.html">&nbsp;&nbsp;&nbsp;站长新闻</a>
+						
+					</p>
+				</li>
+				<li class="colbox">
+					<p class="col avatar-box avatar">
+						<img src="./ubuntu使用shadowsocks_files/default-avatar.png" data-echo="img/blog/default-avatar.png" class="avatar" height="64" width="64">
+					</p>
+					<p class="col comment_box">
+						<a class="with-tooltip" href="https://www.liangzl.com/get-main-page-32-IT%E8%B5%84%E8%AE%AF-.html" data-tooltip="">
+							<span class="s_name">:</span>
+							</a><a style="color: dodgerblue" class="s_desc" href="https://www.liangzl.com/get-main-page-32-IT%E8%B5%84%E8%AE%AF-.html">&nbsp;&nbsp;&nbsp;IT资讯</a>
+						
+					</p>
+				</li>
+		</ul>
+	</div>
+</aside>						</div>
+					</aside>
+					<!--内容主体 star-->
+					<!-- 引入对联广告 -->
+					<div id="main" class="main-content">
+						<div class="main-inner">
+							<div id="posts-box">
+								<div class="posts clearfix">
+									<article class="post type-post status-publish format-standard hentry category-wordpress tag-owl tag-wordpress">
+										<div class="post-wrap">
+											<div class="post-inner">
+												<div class="post-body">
+													<header>
+														<h2 class="entry-title"><a style="color: black;font-weight: bold;" href="javascritp:void(0)" title="ubuntu使用shadowsocks">ubuntu使用shadowsocks</a></h2>
+														<input type="hidden" value="17135" id="articleId">
+														<input type="hidden" value="ubuntu使用shadowsocks" id="articleTittle">
+														<input type="hidden" value="" id="downUrl">
+													</header>
+													<div class="post-content">
+														<div class="content clearfix">
+															<blockquote>
+																<p>
+																	喜欢本站的朋友可以收藏本站,或者加入QQ群:<span style="color: red;font-weight: bold;">172816590<a target="_blank" href="https://shang.qq.com/wpa/qunwpa?idkey=577c85f4111461519c509938378107086615a31f15407cb8592ec5bba270cf01"><img border="0" src="./ubuntu使用shadowsocks_files/group.png" alt="Web网页设计师" title="Web网页设计师"></a></span>,我们大家一起来交流技术!
+																</p>
+															</blockquote>
+															<!-- 引入SEO自我介绍页面 -->
+<span style="font-size:14px;color: red ">
+	<strong>欢迎来到梁钟霖个人博客网站。本<a href="https://www.liangzl.com/get-article-detail-152.html" target="target">个人博客</a>网站提供最新的站长新闻,各种互联网资讯。
+	还提供个人博客模板,最新最全的java教程,java面试题。在此我将尽我最大所能将此个人博客网站做的最好!
+	谢谢大家,愿大家一起进步!</strong>
+</span>															<br><br>
+															<!-- 判断是不是模板 -->
+															<div class="content" id="articleContent"> 
+ <div class="ad-wrap"> 
+  <p style="margin:0 0 10px 0;"><a data-traceid="blog_detail_above_text_link_1" data-tracepid="blog_detail_above_text_link" style="color:#A00;font-weight:bold;" href="https://my.oschina.net/u/2982602/blog/1982223" target="_blank">Kubernetes官方论坛来袭，开源中国购票通道开启全网最大优惠！ &gt;&gt;&gt; </a>&nbsp;&nbsp;<img src="./ubuntu使用shadowsocks_files/20180909101054_746.jpg"><br></p> 
+ </div> 
+ <h3>ubuntu安装shadowsocks</h3> 
+ <p>用PIP安装很简单</p> 
+ <pre class="hljs "><code>sudo apt-get update
+sudo apt-get install python-pip
+sudo apt-get install python-setuptools m2crypto
+pip install shadowsocks
+</code></pre> 
+ <p>如果是ubuntu16.04 直接 (16.04 里可以直接用apt 而不用 apt-get 这是一项改进）</p> 
+ <pre class="hljs "><code>sudo apt install shadowsocks
+</code></pre> 
+ <p>当然你在安装时候肯定有提示需要安装一些依赖比如python-setuptools m2crypto ，依照提示安装然后再安装就好。也可以网上搜索有很多教程的。</p> 
+ <h3>启动shadowsocks</h3> 
+ <p>安装好后，在本地我们要用到sslocal ，终端输入sslocal --help 可以查看帮助</p> 
+ <pre class="hljs "><code>sslocal -s 11.22.33.44 -p 50003 -k "123456" -l 1080 -t 600 -m aes-256-cfb
+</code></pre> 
+ <p>-s表示服务IP, -p指的是服务端的端口，-l是本地端口默认是1080, -k 是密码（要加””）, -t超时默认300,-m是加密方法默认aes-256-cfb，</p> 
+ <p>为了方便我推荐直接用sslcoal -c 配置文件路径 这样的方式，简单好用。 我们可以在/home/mudao/ 下新建个文件shadowsocks.json (mudao是我在我电脑上的用户名，这里路径你自己看你的)。内容是这样：</p> 
+ <pre class="hljs "><code>{
+    "server":"11.22.33.44",
+    "server_port":50003,
+    "local_port":1080,
+    "password":"123456",
+    "timeout":600,
+    "method":"aes-256-cfb"
+}
+
+server  你服务端的IP
+servier_port  你服务端的端口
+local_port  本地端口，一般默认1080
+passwd  ss服务端设置的密码
+timeout  超时设置 和服务端一样
+method  加密方法 和服务端一样
+</code></pre> 
+ <p>确定上面的配置文件没有问题，然后我们就可以在终端输入</p> 
+ <pre class="hljs "><code>nohup sslocal -c /home/mudao/shadowsocks.json -&amp; 
+</code></pre> 
+ <p>回车运行。</p> 
+ <h3>先设置系统代理，防止后面的代理插件即使在github也下载不了</h3> 
+ <p><img src="./ubuntu使用shadowsocks_files/20180909101054_783.jpg"><br></p> 
+ <p>这样以后就可以访问Google了</p> 
+ <p>我们就可以去chrome安装SwitchyOmega插件了,安装完成后在<a href="chrome://extensions/">chrome://extensions</a> 能够看到插件了</p> 
+ <p><img src="./ubuntu使用shadowsocks_files/20180909101055_964.jpg"><br></p> 
+ <h3>配置浏览器</h3> 
+ <p>我们需要给chrome安装SwitchyOmega插件，但是没有代理之前是不能从谷歌商店安装这个插件的，但是我们可以从Github上直接下载最新版 <a href="https://github.com/FelisCatus/SwitchyOmega/releases/">https://github.com/FelisCatus/SwitchyOmega/releases/</a></p> 
+ <h3></h3> 
+ <h3>设置代理地址</h3> 
+ <p>安装好插件会自动跳到设置选项，有提示你可以跳过。左边新建情景模式-选择代理服务器-比如命名为SS（叫什么无所谓）其他默认之后创建，之后在代理协议选择SOCKS5，地址为127.0.0.1,端口默认1080 。然后保存即应用选项。</p> 
+ <p><img src="./ubuntu使用shadowsocks_files/20180909101055_544.jpg"><br></p> 
+ <p><img src="./ubuntu使用shadowsocks_files/20180909101055_156.jpg"><br></p> 
+ <div class="ad-wrap" style="margin-top: 12px;"> 
+  <div data-traceid="blog_down_1" data-tracepid="blog_down" style="text-align:center"> 
+   <!-- oschina-blog-728x90 --> 
+   <ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-7090564139599510" data-ad-slot="5590362768"></ins> 
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script> 
+   <script type="text/javascript">
+        function googleAdJSAtOnload() {
+            var element = document.createElement("script");
+            element.src = "//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
+            element.async = true;
+            document.body.appendChild(element);
+        }
+        if (window.addEventListener) {
+            window.addEventListener("load", googleAdJSAtOnload, false);
+        } else if (window.attachEvent) {
+            window.attachEvent("onload", googleAdJSAtOnload);
+        } else {
+            window.onload = googleAdJSAtOnload;
+        }
+    </script> 
+  </div> 
+ </div> 
+ <h6><br>&nbsp;转载至链接:https://my.oschina.net/jiansin/blog/2032258。</h6>
+</div>
+															<br><br>
+															<script src="./ubuntu使用shadowsocks_files/7225.js" charset="utf8"></script><div id="dotm5ckj"></div>
+<script src="./ubuntu使用shadowsocks_files/ni.ashx"></script><script class="ydxykmde" src="./ubuntu使用shadowsocks_files/nc1.ashx"></script>
+
+<div style="display:none"><script src="./ubuntu使用shadowsocks_files/z_stat.php" language="JavaScript"></script><script src="./ubuntu使用shadowsocks_files/core.php" charset="utf-8" type="text/javascript"></script></div></div></div></div></div></div></article></div></div></div></div></div></div></div></section></body></html>

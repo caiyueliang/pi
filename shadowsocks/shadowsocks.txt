@@ -1,4 +1,4 @@
-ubuntu安装shadowsocks
+一, ubuntu安装shadowsocks
 sudo apt-get update
 sudo apt-get install python-setuptools m2crypto
 sudo apt-get install shadowsocks
@@ -46,4 +46,15 @@ sudo apt install libsodium-dev
 安装shadowsocks:
 pip install https://github.com/shadowsocks/shadowsocks/archive/master.zip -U
 测试可用 chacha20-ietf-poly1305 加密
+
+==========================================================================
+二，设置ubuntu系统本地代理
+网络代理：手动
+socks主机 127.0.0.1 1080
+
+==========================================================================
+三，chrome安装SwitchyOmega插件了,安装完成后在chrome://extensions 能够看到插件了
+设置代理地址
+安装好插件会自动跳到设置选项，有提示你可以跳过。左边新建情景模式-选择代理服务器-比如命名为SS（叫什么无所谓）其他默认之后创建，之后在代理协议选择SOCKS5，地址为127.0.0.1,端口默认1080 。然后保存即应用选项。
+
 
